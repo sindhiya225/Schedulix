@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+        .input-group { margin-bottom: 10px; }
+        label { display: block; margin-top: 5px; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 8px; }
+        button { padding: 10px 15px; margin-top: 15px; cursor: pointer; }
+        #result { margin-top: 20px; padding: 10px; border: 1px solid #ddd; }
+        .funded { color: green; }
+        .not-funded { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Personal Finance Tracker</h1>
+
+    <form id="financeForm">
+        <!-- Total Income -->
+        <div class="input-group">
+            <label for="totalIncome">Total Income:</label>
+            <input type="number" id="totalIncome" name="totalIncome" required>
+        </div>
+
+        <!-- Savings Goals -->
+        <div class="input-group">
+            <label>Number of Savings Goals:</label>
+            <input type="number" id="numSavings" required>
+            <button type="button" onclick="addSavingsFields()">Add Savings Goals</button>
+        </div>
+        <div id="savingsContainer"></div>
+
+        <!-- Expenses -->
+        <div class="input-group">
+            <label>Number of Expenses:</label>
+            <input type="number" id="numExpenses" required>
+            <button type="button" onclick="addExpenseFields()">Add Expenses</button>
+        </div>
+        <div id="expensesContainer"></div>
+
+        <button type="button" onclick="calculateAllocations()">Submit</button>
+    </form>
+
+    <h2>Results</h2>
+    <div id="result"></div>
+
+    <script>
+        function addSavingsFields() {
+            const count = parseInt(document.getElementById('numSavings').value);
+            const container = document.getElementById('savingsContainer');
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                container.innerHTML += `
+                    <h3>Savings Goal ${i + 1}</h3>
+                    <div class="input-group">
+                        <label for="savingsName${i}">Goal Name:</label>
+                        <input type="text" name="savingsName${i}" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="savingsAmount${i}">Target Amount:</label>
+                        <input type="number" name="savingsAmount${i}" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="savingsImportance${i}">Importance (1-10):</label>
+                        <input type="number" name="savingsImportance${i}" min="1" max="10" required>
+                    </div>`;
+            }
+        }
+
+        function addExpenseFields() {
+            const count = parseInt(document.getElementById('numExpenses').value);
+            const container = document.getElementById('expensesContainer');
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                container.innerHTML += `
+                    <h3>Expense ${i + 1}</h3>
+                    <div class="input-group">
+                        <label for="expenseName${i}">Expense Category:</label>
+                        <input type="text" name="expenseName${i}" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="expenseAmount${i}">Amount:</label>
+                        <input type="number" name="expenseAmount${i}" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="expenseImportance${i}">Importance (1-10):</label>
+                        <input type="number" name="expenseImportance${i}" min="1" max="10" required>
+                    </div>`;
+            }
+        }
+
+        function calculateAllocations() {
+            const totalIncome = parseFloat(document.getElementById('totalIncome').value);
+            const savingsGoals = [];
+            const expenses = [];
+
+            const numSavings = parseInt(document.getElementById('numSavings').value);
+            for (let i = 0; i < numSavings; i++) {
+                const name = document.querySelector(`input[name="savingsName${i}"]`).value;
+                const amount = parseFloat(document.querySelector(`input[name="savingsAmount${i}"]`).value);
+                const importance = parseInt(document.querySelector(`input[name="savingsImportance${i}"]`).value);
+                savingsGoals.push({ name, amount, importance });
+            }
+
+            const numExpenses = parseInt(document.getElementById('numExpenses').value);
+            for (let i = 0; i < numExpenses; i++) {
+                const name = document.querySelector(`input[name="expenseName${i}"]`).value;
+                const amount = parseFloat(document.querySelector(`input[name="expenseAmount${i}"]`).value);
+                const importance = parseInt(document.querySelector(`input[name="expenseImportance${i}"]`).value);
+                expenses.push({ name, amount, importance });
+            }
+
+            // Simple allocation logic
+            let totalAllocatedSavings = 0;
+            let totalAllocatedExpenses = 0;
+            let output = `<h3>Optimal Savings and Expense Allocation:</h3>`;
+            output += `<h4>--- Savings Goals ---</h4>`;
+
+            savingsGoals.forEach(goal => {
+                if (goal.amount <= totalIncome - (totalAllocatedSavings + totalAllocatedExpenses)) {
+                    output += `<p class="funded">✅ ${goal.name} (Amount: ${goal.amount.toFixed(2)}, Importance: ${goal.importance}): Funded</p>`;
+                    totalAllocatedSavings += goal.amount;
+                } else {
+                    output += `<p class="not-funded">❌ ${goal.name} (Amount: ${goal.amount.toFixed(2)}, Importance: ${goal.importance}): Not Funded</p>`;
+                }
+            });
+
+            output += `<h4>--- Expenses ---</h4>`;
+            expenses.forEach(expense => {
+                if (expense.amount <= totalIncome - (totalAllocatedSavings + totalAllocatedExpenses)) {
+                    output += `<p class="funded">✅ ${expense.name} (Amount: ${expense.amount.toFixed(2)}, Importance: ${expense.importance}): Funded</p>`;
+                    totalAllocatedExpenses += expense.amount;
+                } else {
+                    output += `<p class="not-funded">❌ ${expense.name} (Amount: ${expense.amount.toFixed(2)}, Importance: ${expense.importance}): Not Funded</p>`;
+                }
+            });
+
+            output += `<h4>--- Summary ---</h4>`;
+            output += `<p>Total Income: ${totalIncome.toFixed(2)}</p>`;
+            output += `<p>Total Allocated for Savings: ${totalAllocatedSavings.toFixed(2)}</p>`;
+            output += `<p>Total Allocated for Expenses: ${totalAllocatedExpenses.toFixed(2)}</p>`;
+            output += `<p>Remaining Budget: ${(totalIncome - (totalAllocatedSavings + totalAllocatedExpenses)).toFixed(2)}</p>`;
+
+            document.getElementById('result').innerHTML = output;
+        }
+    </script>
+</body>
+</html>
