@@ -29,7 +29,7 @@ This tool aids in making informed financial decisions by automatically calculati
 ## 🖼️ Screenshots
 
 ### 🔐 Add Income and Goals
-![screenshot-1]("C:\Users\Asus\Pictures\Screenshots\Screenshot 2025-05-08 180809.png")
+![screenshot-1](C:\Users\Asus\Pictures\Screenshots\ss1.png)
 
 ### ➕ Add Expenses and Submit
 ![screenshot-2](path-to-your-screenshot-image-2.png)
