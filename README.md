@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # 💰 Personal Finance Tracker
 
 A web-based application that helps users track income, expenses, and savings goals while providing an optimized allocation based on user-defined priorities.
