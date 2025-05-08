@@ -29,15 +29,15 @@ This tool aids in making informed financial decisions by automatically calculati
 ## 🖼️ Screenshots
 
 ### 🔐 Add Income and Goals
-![screenshot-1](C:\Users\Asus\Pictures\Screenshots\ss1.png)
+![ss1](https://github.com/user-attachments/assets/3cbf9be0-4a7d-40d6-8f7a-82f6e2a33993)
+
 
 ### ➕ Add Expenses and Submit
-![screenshot-2](path-to-your-screenshot-image-2.png)
+![image](https://github.com/user-attachments/assets/b329890a-21f8-45f0-ac51-c915df5d8f58)
 
 ### 📈 Allocation Results and Summary
-![screenshot-3](path-to-your-screenshot-image-3.png)
+![image](https://github.com/user-attachments/assets/aa5787df-3174-4722-ad59-5ca5b63ff7aa)
 
-> Replace the placeholder paths above with your actual image URLs or file paths.
 
 ---
 
@@ -45,7 +45,7 @@ This tool aids in making informed financial decisions by automatically calculati
 
 - **HTML5**
 - **CSS3**
-- **JavaScript (Vanilla)**
+- **JavaScript**
 
 ---
 
